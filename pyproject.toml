@@ -2,15 +2,16 @@
 name = "ai-moderation-lab"
 version = "0.1.0"
 description = "OpenEnv AI moderation environment"
-authors = [
-  { name = "Arnav", email = "arnav@example.com" }
-]
 dependencies = [
   "fastapi",
   "uvicorn",
   "pydantic",
-  "requests"
+  "requests",
+  "openenv-core>=0.2.0"
 ]
+
+[project.scripts]
+server = "server.app:app"
 
 [build-system]
 requires = ["setuptools", "wheel"]
