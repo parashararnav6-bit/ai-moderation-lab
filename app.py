@@ -26,11 +26,13 @@ def home():
 def health():
     return {"status": "AI Moderation Env Running"}
 
-
 @app.get("/reset")
-def reset():
+def reset_get():
     return env.reset()
 
+@app.post("/reset")
+def reset_post():
+    return env.reset()
 
 @app.get("/state")
 def get_state():
