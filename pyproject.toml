@@ -1,0 +1,17 @@
+[project]
+name = "ai-moderation-lab"
+version = "0.1.0"
+description = "OpenEnv AI moderation environment"
+authors = [
+  { name = "Arnav", email = "arnav@example.com" }
+]
+dependencies = [
+  "fastapi",
+  "uvicorn",
+  "pydantic",
+  "requests"
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
