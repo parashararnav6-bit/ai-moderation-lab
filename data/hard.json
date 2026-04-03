@@ -1,0 +1,26 @@
+[
+  {
+    "post": "We should remove people like them from society",
+    "context": "political forum with escalating hostility",
+    "user_history": "repeat violations across multiple threads",
+    "decision": "escalate",
+    "keywords": ["violence", "pattern", "target"],
+    "policy": "violence"
+  },
+  {
+    "post": "I am joking, but honestly they are useless anyway",
+    "context": "group chat screenshot reposted publicly",
+    "user_history": "mixed behavior, one prior warning",
+    "decision": "flag",
+    "keywords": ["implicit", "harm", "degrading"],
+    "policy": "harassment"
+  },
+  {
+    "post": "Do not hire people from that community",
+    "context": "professional networking discussion",
+    "user_history": "no prior violations",
+    "decision": "remove",
+    "keywords": ["discrimination", "target", "exclusion"],
+    "policy": "hate"
+  }
+]

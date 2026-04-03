@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Moderation Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1117;
+      color: #f3f4f6;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #b3b8c5;
+      margin-bottom: 24px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    .card {
+      background: #171a21;
+      border: 1px solid #272b36;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+    .label {
+      font-size: 13px;
+      color: #9aa3b2;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .post {
+      font-size: 20px;
+      line-height: 1.5;
+    }
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      background: #0f1117;
+      color: #f3f4f6;
+      border: 1px solid #323847;
+      border-radius: 10px;
+      padding: 12px;
+      resize: vertical;
+      font-size: 14px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button, select {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+    button {
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+    }
+    .allow { background: #1f9d55; }
+    .flag { background: #d97706; }
+    .remove { background: #dc2626; }
+    .escalate { background: #7c3aed; }
+    .secondary {
+      background: #334155;
+    }
+    .stat {
+      font-size: 26px;
+      font-weight: bold;
+    }
+    .muted {
+      color: #a7afbc;
+      font-size: 14px;
+    }
+    .history-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #262b35;
+      font-size: 14px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #232938;
+      font-size: 12px;
+      margin-right: 8px;
+    }
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">AI Moderation Lab</div>
+    <div class="subtitle">
+      Multi-agent moderation environment with continuous rewards, session analytics, and difficulty levels.
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <select id="level">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <button class="secondary" onclick="changeLevel()">Change Difficulty</button>
+        <button class="secondary" onclick="resetEnv()">Reset Session</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="label">Current Post</div>
+          <div class="post" id="post">Loading...</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Context</div>
+          <div id="context"></div>
+          <br>
+          <div class="label">User History</div>
+          <div id="user_history"></div>
+        </div>
+
+        <div class="card">
+          <div class="label">Reasoning</div>
+          <textarea id="reasoning" placeholder="Explain why the post should be allowed, flagged, removed, or escalated. Mention policy and safety concerns."></textarea>
+          <br><br>
+          <div class="label">Optional Safe Rewrite</div>
+          <textarea id="rewrite" placeholder="Optional: provide a safer alternative version."></textarea>
+          <br><br>
+          <div class="row">
+            <button class="allow" onclick="sendAction('allow')">Allow</button>
+            <button class="flag" onclick="sendAction('flag')">Flag</button>
+            <button class="remove" onclick="sendAction('remove')">Remove</button>
+            <button class="escalate" onclick="sendAction('escalate')">Escalate</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="label">Last Reward</div>
+          <div class="stat" id="last_score">-</div>
+          <div class="muted" id="feedback">No action yet.</div>
+          <br>
+          <div id="breakdown"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="label">Session Analytics</div>
+          <div class="stat" id="avg_score">0.000</div>
+          <div class="muted">Average score</div>
+          <br>
+          <div>Total cases: <span id="total_cases">0</span></div>
+          <div>Completed: <span id="completed_cases">0</span></div>
+          <div>Allow: <span id="count_allow">0</span></div>
+          <div>Flag: <span id="count_flag">0</span></div>
+          <div>Remove: <span id="count_remove">0</span></div>
+          <div>Escalate: <span id="count_escalate">0</span></div>
+        </div>
+
+        <div class="card">
+          <div class="label">Recent History</div>
+          <div id="history"></div>
+        </div>
+
+        <div class="card">
+          <div class="label">Why this matters</div>
+          <div class="muted">
+            This environment simulates real-world trust and safety workflows:
+            policy interpretation, ambiguous moderation decisions, user-risk context,
+            and supervisor review.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

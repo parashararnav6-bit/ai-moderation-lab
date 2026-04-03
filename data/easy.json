@@ -1,0 +1,26 @@
+[
+  {
+    "post": "I hate people from group X",
+    "context": "public comment under a news post",
+    "user_history": "none",
+    "decision": "remove",
+    "keywords": ["hate", "target", "harmful"],
+    "policy": "hate"
+  },
+  {
+    "post": "You are an idiot and nobody likes you",
+    "context": "reply in public thread",
+    "user_history": "clean",
+    "decision": "flag",
+    "keywords": ["insult", "abusive", "offensive"],
+    "policy": "harassment"
+  },
+  {
+    "post": "I completely disagree with your opinion",
+    "context": "discussion forum",
+    "user_history": "clean",
+    "decision": "allow",
+    "keywords": ["disagreement", "non-violent", "opinion"],
+    "policy": "safe"
+  }
+]

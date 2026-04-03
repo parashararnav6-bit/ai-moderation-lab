@@ -1,0 +1,26 @@
+[
+  {
+    "post": "Yeah they are always sooo smart 🙄",
+    "context": "sarcastic reply in a public discussion",
+    "user_history": "clean",
+    "decision": "flag",
+    "keywords": ["sarcasm", "implicit", "offensive"],
+    "policy": "harassment"
+  },
+  {
+    "post": "People like them ruin everything",
+    "context": "community forum thread",
+    "user_history": "warning issued last month",
+    "decision": "remove",
+    "keywords": ["group", "target", "negative"],
+    "policy": "hate"
+  },
+  {
+    "post": "Someone should teach them a lesson",
+    "context": "heated gaming community conversation",
+    "user_history": "two prior reports",
+    "decision": "escalate",
+    "keywords": ["threat", "ambiguous", "risk"],
+    "policy": "violence"
+  }
+]

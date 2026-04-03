@@ -1,0 +1,11 @@
+name: ai-moderation-lab
+version: 1.0.0
+description: Multi-agent trust-and-safety moderation environment with reasoning-based rewards and dashboard UI.
+
+tasks:
+  - easy
+  - medium
+  - hard
+
+reward:
+  range: [0.0, 1.0]
