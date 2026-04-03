@@ -2,6 +2,8 @@
 name = "ai-moderation-lab"
 version = "0.1.0"
 description = "OpenEnv AI moderation environment"
+requires-python = ">=3.10"
+
 dependencies = [
   "fastapi",
   "uvicorn",
