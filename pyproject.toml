@@ -1,20 +1,14 @@
 [project]
 name = "ai-moderation-lab"
 version = "0.1.0"
-description = "OpenEnv AI moderation environment"
 requires-python = ">=3.10"
 
 dependencies = [
-  "fastapi",
-  "uvicorn",
-  "pydantic",
-  "requests",
-  "openenv-core>=0.2.0"
+    "fastapi",
+    "uvicorn",
+    "requests",
+    "openenv-core>=0.2.0"
 ]
 
 [project.scripts]
-server = "server.app:app"
-
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+server = "server.app:main"
