@@ -1,7 +1,11 @@
+from openai import OpenAI
 import os
 import requests
 
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+client = OpenAI(
+    base_url=os.environ["API_BASE_URL"],
+    api_key=os.environ["API_KEY"]
+)
 
 
 def run_inference():
