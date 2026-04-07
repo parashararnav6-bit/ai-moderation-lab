@@ -13,6 +13,18 @@ app = FastAPI()
 def root():
     return {"status": "ok"}
 
+@app.get("/reset")
+def reset_get():
+    return {"msg": "reset"}
+
+@app.post("/reset")
+def reset_post():
+    return {"msg": "reset"}
+
+@app.get("/state")
+def state():
+    return {"state": "ok"}
+
 @app.post("/step")
 def step(action: dict):
     user_input = action.get("input") or str(action)
