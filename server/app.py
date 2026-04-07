@@ -2,8 +2,8 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key=os.getenv["API_KEY"],
-    base_url=os.getenv["API_BASE_URL"]
+    api_key=os.getenv("API_KEY"),
+    base_url=os.getenv("API_BASE_URL")
 )
 from fastapi import FastAPI
 
