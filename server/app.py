@@ -2,10 +2,17 @@ from openai import OpenAI
 import os
 from fastapi import FastAPI
 
-client = OpenAI(
-    api_key=os.environ.get("API_KEY", "test"),
-    base_url=os.environ.get("API_BASE_URL", "https://example.com")
-)
+if "API_BASE_URL" in os.environ and "API_KEY" in os.environ:
+    client = OpenAI(
+        api_key=os.environ["API_KEY"],
+        base_url=os.environ["API_BASE_URL"]
+    )
+else:
+    
+    client = OpenAI(
+        api_key="test",
+        base_url="http://localhost"  
+    )
 
 app = FastAPI()
 
