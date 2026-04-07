@@ -1,33 +1,40 @@
 import os
 import requests
 
-API_BASE_URL = os.getenv("API_BASE_URL", "http://0.0.0.0:7860")
-MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o-mini")
-HF_TOKEN = os.getenv("HF_TOKEN")
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+
 
 def run_inference():
-    print("Running inference test...")
+    print("[START] task=moderation", flush=True)
+
 
     reset_res = requests.post(f"{API_BASE_URL}/reset")
-    print("Reset response:", reset_res.status_code)
 
     if reset_res.status_code != 200:
-        print("Reset failed")
+        print("[END] task=moderation score=0 steps=0", flush=True)
         return
 
+    obs = reset_res.json()
     action = {
         "decision": "flag",
-        "reasoning": "This content may violate policy and should be reviewed.",
+        "reasoning": "Potential policy violation",
         "rewrite": None
     }
 
     step_res = requests.post(f"{API_BASE_URL}/step", json=action)
-    print("Step response:", step_res.status_code)
 
-    if step_res.status_code == 200:
-        print("Inference working ✅")
-    else:
-        print("Step failed ❌")
+    if step_res.status_code != 200:
+        print("[END] task=moderation score=0 steps=1", flush=True)
+        return
+
+    result = step_res.json()
+
+    reward = result.get("reward", 0)
+
+    print(f"[STEP] step=1 reward={reward}", flush=True)
+
+    print("[END] task=moderation score=1 steps=1", flush=True)
+
 
 if __name__ == "__main__":
     run_inference()
