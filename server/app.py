@@ -2,8 +2,8 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key=os.environ["API_KEY"],
-    base_url=os.environ["API_BASE_URL"]
+    api_key=os.getenv["API_KEY"],
+    base_url=os.getenv["API_BASE_URL"]
 )
 from fastapi import FastAPI
 
@@ -31,20 +31,22 @@ def state():
 
 @app.post("/step")
 def step(action: dict):
-    user_input = action.get("input", "")
+    user_input = action.get("input") or str(action)
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are a content moderation assistant."},
-            {"role": "user", "content": user_input}
-        ]
-    )
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a content moderation assistant."},
+                {"role": "user", "content": user_input}
+            ]
+        )
 
-    result = response.choices[0].message.content
+        result = response.choices[0].message.content
+        return {"result": result}
 
-    return {"result": result}
-
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.post("/set_level")
 def set_level(payload: dict):
