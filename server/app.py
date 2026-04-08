@@ -4,8 +4,8 @@ from fastapi import FastAPI
 
 
 client = OpenAI(
-    api_key=os.environ.get("API_KEY", "test"),
-    base_url=os.environ.get("API_BASE_URL", "http://localhost")
+    api_key=os.environ["API_KEY"],
+    base_url=os.environ["API_BASE_URL"]
 )
 
 app = FastAPI()
@@ -34,7 +34,7 @@ def step(action: dict):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "You are a content moderation assistant."},
+            {"role": "system", "content": "You are a moderation assistant."},
             {"role": "user", "content": user_input}
         ]
     )
