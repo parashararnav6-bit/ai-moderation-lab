@@ -2,17 +2,11 @@ from openai import OpenAI
 import os
 from fastapi import FastAPI
 
-if "API_BASE_URL" in os.environ and "API_KEY" in os.environ:
-    client = OpenAI(
-        api_key=os.environ["API_KEY"],
-        base_url=os.environ["API_BASE_URL"]
-    )
-else:
-    
-    client = OpenAI(
-        api_key="test",
-        base_url="http://localhost"  
-    )
+
+client = OpenAI(
+    api_key=os.environ.get("API_KEY", "test"),
+    base_url=os.environ.get("API_BASE_URL", "http://localhost")
+)
 
 app = FastAPI()
 
@@ -36,6 +30,7 @@ def state():
 def step(action: dict):
     user_input = action.get("input") or str(action)
 
+   
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -45,6 +40,7 @@ def step(action: dict):
     )
 
     return {"result": response.choices[0].message.content}
+
 
 def main():
     import uvicorn
