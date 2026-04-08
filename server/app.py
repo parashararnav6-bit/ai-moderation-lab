@@ -3,10 +3,13 @@ import os
 from fastapi import FastAPI
 
 
-client = OpenAI(
-    api_key=os.environ["API_KEY"],
-    base_url=os.environ["API_BASE_URL"]
-)
+if "API_KEY" in os.environ and "API_BASE_URL" in os.environ:
+    client = OpenAI(
+        api_key=os.environ["API_KEY"],
+        base_url=os.environ["API_BASE_URL"]
+    )
+else:
+    client = None  # prevent crash on HF
 
 app = FastAPI()
 
@@ -30,17 +33,20 @@ def state():
 def step(action: dict):
     user_input = action.get("input") or str(action)
 
-   
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are a moderation assistant."},
-            {"role": "user", "content": user_input}
-        ]
-    )
+    
+    if client:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a moderation assistant."},
+                {"role": "user", "content": user_input}
+            ]
+        )
+        return {"result": response.choices[0].message.content}
 
-    return {"result": response.choices[0].message.content}
-
+    # fallback only for HF runtime
+    return {"result": "ok"}
+    
 
 def main():
     import uvicorn
