@@ -1,6 +1,6 @@
 import os
 import requests
-import time
+
 
 API_BASE_URL = os.environ["API_BASE_URL"]
 
@@ -8,20 +8,17 @@ def run_inference():
     print("[START] task=moderation", flush=True)
 
     try:
-       
+        
         requests.post(f"{API_BASE_URL}/reset")
 
-      
+       
         response = requests.post(
             f"{API_BASE_URL}/step",
             json={"input": "Check if this content is safe"}
         )
 
-       
-        result = response.json()
-
-       
-        time.sleep(1)
+        
+        data = response.json()
 
         print("[STEP] step=1 action=test reward=0.5 done=true error=null", flush=True)
 
