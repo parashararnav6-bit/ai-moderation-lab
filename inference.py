@@ -1,31 +1,49 @@
 import os
-import requests
+from openai import OpenAI
 
-API_BASE_URL = os.environ["API_BASE_URL"]
-
-def run_inference():
-    print("[START] task=moderation", flush=True)
-
-    try:
+class PolicyAgent:
+    def __init__(self):
         
-        requests.post(f"{API_BASE_URL}/reset")
-
-        
-        response = requests.post(
-            f"{API_BASE_URL}/step",
-            json={"input": "This is a test message"}
+        self.client = OpenAI(
+            base_url=os.environ["API_BASE_URL"],
+            api_key=os.environ["API_KEY"]
         )
-
+        self.model = os.environ.get("MODEL_NAME", "gpt-4o-mini")
+    
+    def act(self, observation):
+        """Called for each moderation task."""
+        post = observation.get("post", "")
+        context = observation.get("context", "")
+        user_history = observation.get("user_history", [])
+        difficulty = observation.get("difficulty", "easy")
         
-        _ = response.text
+        prompt = self._build_prompt(post, context, user_history, difficulty)
+        
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+            max_tokens=500
+        )
+        
+    
+        return self._parse_response(response.choices[0].message.content)
+    
+    def _build_prompt(self, post, context, user_history, difficulty):
+        return f"""You are a content moderator. Decide: allow, flag, remove, or escalate.
 
-        print("[STEP] step=1 action=test reward=1.0 done=true error=null", flush=True)
-        print("[END] success=true steps=1 score=1.0 rewards=1.0", flush=True)
+Post: {post}
+Context: {context}
+User History: {user_history}
+Difficulty: {difficulty}
 
-    except Exception as e:
-        print(f"[STEP] step=1 action=error reward=0 done=true error={e}", flush=True)
-        print("[END] success=false steps=1 score=0 rewards=0", flush=True)
-
-
-if __name__ == "__main__":
-    run_inference()
+Respond in JSON format:
+{{"decision": "<allow|flag|remove|escalate>", "reasoning": "<explanation>"}}
+"""
+    
+    def _parse_response(self, content):
+        import json
+        try:
+            return json.loads(content)
+        except:
+            return {"decision": "flag", "reasoning": "Failed to parse, defaulting to flag."}
