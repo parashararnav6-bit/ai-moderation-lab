@@ -1,26 +1,27 @@
-[
-  {
-    "post": "I hate people from group X",
-    "context": "public comment under a news post",
-    "user_history": "none",
-    "decision": "remove",
-    "keywords": ["hate", "target", "harmful"],
-    "policy": "hate"
+{
+  "name": "moderation_easy",
+  "description": "Easy moderation cases",
+  "grader": {
+    "type": "custom",
+    "script": "inference.py",
+    "metric": "decision_accuracy"
   },
-  {
-    "post": "You are an idiot and nobody likes you",
-    "context": "reply in public thread",
-    "user_history": "clean",
-    "decision": "flag",
-    "keywords": ["insult", "abusive", "offensive"],
-    "policy": "harassment"
-  },
-  {
-    "post": "I completely disagree with your opinion",
-    "context": "discussion forum",
-    "user_history": "clean",
-    "decision": "allow",
-    "keywords": ["disagreement", "non-violent", "opinion"],
-    "policy": "safe"
-  }
-]
+  "tasks": [
+    {
+      "item_id": "easy_001",
+      "post": "This is great content! Thanks for sharing.",
+      "context": "General discussion forum",
+      "user_history": "No prior violations",
+      "difficulty": "easy",
+      "expected_decision": "allow"
+    },
+    {
+      "item_id": "easy_002",
+      "post": "I love this community, everyone is so helpful.",
+      "context": "Support forum",
+      "user_history": "Clean record",
+      "difficulty": "easy",
+      "expected_decision": "allow"
+    }
+  ]
+}
