@@ -2,35 +2,29 @@ name: ai-moderation-lab
 version: 1.0.0
 
 tasks:
-  - name: "moderation-easy"
-    description: "Evaluate clear-cut content moderation cases."
-    dataset: "data/easy.json"
+  - name: "easy_moderation"
+    description: "Clear-cut content moderation cases"
+    dataset:
+      path: "data/easy.json"
     grader:
       type: "custom"
       script: "inference.py"
-      success_condition: "score >= 0.8"  
-    metrics:
-      - accuracy
-      - reasoning_score
-
-  - name: "moderation-medium"
-    description: "Evaluate borderline or implicitly harmful content."
-    dataset: "data/medium.json"
+      metric: "accuracy"
+    
+  - name: "medium_moderation"
+    description: "Borderline content moderation cases"
+    dataset:
+      path: "data/medium.json"
     grader:
       type: "custom"
       script: "inference.py"
-      success_condition: "score >= 0.7"
-    metrics:
-      - accuracy
-      - policy_alignment_score
-
-  - name: "moderation-hard"
-    description: "Evaluate contextual and safety-critical cases."
-    dataset: "data/hard.json"
+      metric: "accuracy"
+    
+  - name: "hard_moderation"
+    description: "Complex safety-critical cases"
+    dataset:
+      path: "data/hard.json"
     grader:
       type: "custom"
       script: "inference.py"
-      success_condition: "score >= 0.6"
-    metrics:
-      - accuracy
-      - escalation_accuracy
+      metric: "accuracy"
