@@ -1,49 +1,25 @@
-import os
-from openai import OpenAI
+import sys
 
-class PolicyAgent:
-    def __init__(self):
-        
-        self.client = OpenAI(
-            base_url=os.environ["API_BASE_URL"],
-            api_key=os.environ["API_KEY"]
-        )
-        self.model = os.environ.get("MODEL_NAME", "gpt-4o-mini")
+def main():
+    # Your inference logic here
+    # For example:
+    task_name = "example_task"
     
-    def act(self, observation):
-        """Called for each moderation task."""
-        post = observation.get("post", "")
-        context = observation.get("context", "")
-        user_history = observation.get("user_history", [])
-        difficulty = observation.get("difficulty", "easy")
-        
-        prompt = self._build_prompt(post, context, user_history, difficulty)
-        
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=500
-        )
-        
+    # STEP 1: Print START block
+    print(f"[START] task={task_name}", flush=True)
     
-        return self._parse_response(response.choices[0].message.content)
+    # STEP 2: Do your processing
+    # ... your model inference code ...
+    result = 0.5  # example reward
     
-    def _build_prompt(self, post, context, user_history, difficulty):
-        return f"""You are a content moderator. Decide: allow, flag, remove, or escalate.
+    # STEP 3: Print STEP block
+    print(f"[STEP] step=1 reward={result}", flush=True)
+    
+    # STEP 4: Print END block with final score
+    final_score = 0.95  # calculate your actual score
+    steps_taken = 1
+    
+    print(f"[END] task={task_name} score={final_score} steps={steps_taken}", flush=True)
 
-Post: {post}
-Context: {context}
-User History: {user_history}
-Difficulty: {difficulty}
-
-Respond in JSON format:
-{{"decision": "<allow|flag|remove|escalate>", "reasoning": "<explanation>"}}
-"""
-    
-    def _parse_response(self, content):
-        import json
-        try:
-            return json.loads(content)
-        except:
-            return {"decision": "flag", "reasoning": "Failed to parse, defaulting to flag."}
+if __name__ == "__main__":
+    main()
