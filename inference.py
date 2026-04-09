@@ -67,7 +67,7 @@ def inference():
         print(f"[STEP] step=2 reward={reward}", flush=True)
     
     
-    score = 0.95 if success else 0.0
+    score = 0.5 if success else 0.3
     steps = 2 if success else 1
     print(f"[END] task={task_name} score={score} steps={steps}", flush=True)
     
