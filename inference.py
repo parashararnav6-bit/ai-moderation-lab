@@ -1,25 +1,46 @@
-import sys
+import os
+import json
+from openai import OpenAI
 
-def main():
-    # Your inference logic here
-    # For example:
-    task_name = "example_task"
+
+client = OpenAI(
+    base_url=os.environ["API_BASE_URL"],
+    api_key=os.environ["API_KEY"]
+)
+
+def inference(input_data):
     
-    # STEP 1: Print START block
-    print(f"[START] task={task_name}", flush=True)
     
-    # STEP 2: Do your processing
-    # ... your model inference code ...
-    result = 0.5  # example reward
+    prompt = input_data.get("prompt", "")
     
-    # STEP 3: Print STEP block
-    print(f"[STEP] step=1 reward={result}", flush=True)
     
-    # STEP 4: Print END block with final score
-    final_score = 0.95  # calculate your actual score
-    steps_taken = 1
+    response = client.chat.completions.create(
+        model="openai/gpt-4o",  
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7,
+        max_tokens=500
+    )
     
-    print(f"[END] task={task_name} score={final_score} steps={steps_taken}", flush=True)
+    
+    result = response.choices[0].message.content
+    
+    
+    return {
+        "output": result
+    }
 
 if __name__ == "__main__":
-    main()
+   
+    import sys
+    
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], 'r') as f:
+            input_data = json.load(f)
+    else:
+        input_data = json.load(sys.stdin)
+    
+    output = inference(input_data)
+    print(json.dumps(output))
