@@ -1,22 +1,36 @@
 name: ai-moderation-lab
-description: Multi-agent AI moderation environment with reward-based evaluation
-
-entry_point: app:app
+version: 1.0.0
 
 tasks:
-  - name: easy
-    description: Basic moderation cases
-  - name: medium
-    description: Context-aware moderation
-  - name: hard
-    description: Adversarial moderation scenarios
+  - name: "moderation-easy"
+    description: "Evaluate clear-cut content moderation cases."
+    dataset: "data/easy.json"
+    grader:
+      type: "custom"
+      script: "inference.py"
+      success_condition: "score >= 0.8"  
+    metrics:
+      - accuracy
+      - reasoning_score
 
-observation_space:
-  type: object
+  - name: "moderation-medium"
+    description: "Evaluate borderline or implicitly harmful content."
+    dataset: "data/medium.json"
+    grader:
+      type: "custom"
+      script: "inference.py"
+      success_condition: "score >= 0.7"
+    metrics:
+      - accuracy
+      - policy_alignment_score
 
-action_space:
-  type: object
-
-reward_range:
-  min: 0.0
-  max: 1.0
+  - name: "moderation-hard"
+    description: "Evaluate contextual and safety-critical cases."
+    dataset: "data/hard.json"
+    grader:
+      type: "custom"
+      script: "inference.py"
+      success_condition: "score >= 0.6"
+    metrics:
+      - accuracy
+      - escalation_accuracy
