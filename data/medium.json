@@ -1,26 +1,27 @@
-[
-  {
-    "post": "Yeah they are always sooo smart 🙄",
-    "context": "sarcastic reply in a public discussion",
-    "user_history": "clean",
-    "decision": "flag",
-    "keywords": ["sarcasm", "implicit", "offensive"],
-    "policy": "harassment"
+{
+  "name": "moderation_medium",
+  "description": "Medium moderation cases",
+  "grader": {
+    "type": "custom",
+    "script": "inference.py",
+    "metric": "decision_accuracy"
   },
-  {
-    "post": "People like them ruin everything",
-    "context": "community forum thread",
-    "user_history": "warning issued last month",
-    "decision": "remove",
-    "keywords": ["group", "target", "negative"],
-    "policy": "hate"
-  },
-  {
-    "post": "Someone should teach them a lesson",
-    "context": "heated gaming community conversation",
-    "user_history": "two prior reports",
-    "decision": "escalate",
-    "keywords": ["threat", "ambiguous", "risk"],
-    "policy": "violence"
-  }
-]
+  "tasks": [
+    {
+      "item_id": "medium_001",
+      "post": "You're all idiots who don't understand anything.",
+      "context": "Political debate thread",
+      "user_history": "One prior warning",
+      "difficulty": "medium",
+      "expected_decision": "flag"
+    },
+    {
+      "item_id": "medium_002",
+      "post": "This product is trash, don't waste your money.",
+      "context": "Product review",
+      "user_history": "Multiple negative reviews",
+      "difficulty": "medium",
+      "expected_decision": "flag"
+    }
+  ]
+}
