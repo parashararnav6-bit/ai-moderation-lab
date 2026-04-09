@@ -12,3 +12,8 @@ dependencies = [
 
 [project.scripts]
 server = "server.app:main"
+
+[project.entry-points."openenv.tasks"]
+task_easy = "data.easy:get_task"
+task_medium = "data.medium:get_task"
+task_hard = "data.hard:get_task"
